@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Máscara de Emails</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sistema simples para mascarar emails e exportar como CSV.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 12px;
+    }
+
+    .list-group-item {
+      transition: background-color 0.3s;
+    }
+
+    .list-group-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+      border-color: #198754;
+    }
+
+    .btn-success {
+      background-color: #198754;
+    }
+
+    @media (max-width: 576px) {
+      .btn {
+        font-size: 0.9rem;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card p-4">
+    <h2 class="mb-4 text-center">Sistema de Máscara de Emails</h2>
+
+    <div class="mb-3">
+      <input type="email" class="form-control" id="emailInput" placeholder="Digite um e-mail">
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-between mb-3">
+      <button class="btn btn-success w-100 w-md-50" onclick="adicionarEmail()">Adicionar</button>
+      <button class="btn btn-outline-secondary w-100 w-md-50 mt-2 mt-md-0" onclick="exportarCSV()">Exportar CSV</button>
+    </div>
+
+    <div id="alerta" class="alert alert-danger d-none" role="alert"></div>
+
+    <ul class="list-group" id="listaEmails"></ul>
+  </div>
+
+  <script>
+    const listaEmails = [];
+
+    function maskEmail(email) {
+      const [name, domain] = email.split("@");
+      if (!domain || name.length <= 2) return email;
+      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1] + "@" + domain;
+    }
+
+    function adicionarEmail() {
+      const input = document.getElementById("emailInput");
+      const alerta = document.getElementById("alerta");
+      const email = input.value.trim();
+
+      if (!email.includes("@") || email.length < 5) {
+        alerta.textContent = "Digite um e-mail válido.";
+        alerta.classList.remove("d-none");
+        return;
+      }
+
+      alerta.classList.add("d-none");
+      listaEmails.push(email);
+      input.value = "";
+      renderizarLista();
+    }
+
+    function removerEmail(index) {
+      listaEmails.splice(index, 1);
+      renderizarLista();
+    }
+
+    function renderizarLista() {
+      const ul = document.getElementById("listaEmails");
+      ul.innerHTML = "";
+
+      listaEmails.forEach((email, index) => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+        const span = document.createElement("span");
+        span.textContent = maskEmail(email);
+
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-danger btn-sm";
+        btn.textContent = "Excluir";
+        btn.onclick = () => removerEmail(index);
+
+        li.appendChild(span);
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+    }
+
+    function exportarCSV() {
+      if (listaEmails.length === 0) {
+        alert("Nenhum email para exportar.");
+        return;
+      }
+
+      let csvContent = "data:text/csv;charset=utf-8,Email Mascarado\n";
+      listaEmails.forEach(email => {
+        csvContent += maskEmail(email) + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "emails_mascarados.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+
+</body>
+</html>
