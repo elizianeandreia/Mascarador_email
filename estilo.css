@@ -48,7 +48,7 @@ body{
   overflow-x:hidden;
 }
 
-/* grid de fundo estilo HUD */
+
 body::before{
   content:"";
   position:fixed;
@@ -62,7 +62,7 @@ body::before{
   opacity:.9;
 }
 
-/* scanline sutil */
+
 body::after{
   content:"";
   position:fixed;
@@ -78,7 +78,7 @@ body::after{
   opacity:.22;
 }
 
-/* painel principal */
+
 .container{
   width:min(880px, 100%);
   position:relative;
@@ -102,7 +102,7 @@ body::after{
   overflow:hidden;
 }
 
-/* cantos futuristas */
+
 .container::before,
 .container::after{
   content:"";
@@ -128,7 +128,7 @@ body::after{
   box-shadow:8px 8px 30px rgba(124,92,255,.18);
 }
 
-/* linha superior de HUD */
+
 .container .hud-label,
 .container::marker{
   display:none;
@@ -171,7 +171,7 @@ p.lead{
   font-size:.95rem;
 }
 
-/* linha input + botões */
+
 .form-row{
   display:grid;
   grid-template-columns:1fr auto auto;
@@ -180,7 +180,7 @@ p.lead{
   margin-top:10px;
 }
 
-/* input sci-fi */
+
 #emailInput{
   width:100%;
   height:60px;
@@ -223,7 +223,7 @@ p.lead{
     inset 0 0 28px rgba(73,215,255,.04);
 }
 
-/* botões */
+
 .actions{
   display:flex;
   flex-wrap:wrap;
@@ -344,7 +344,7 @@ p.lead{
   border-color:rgba(120,210,255,.22);
 }
 
-/* lista */
+
 .list{
   margin-top:22px;
   display:flex;
@@ -416,7 +416,7 @@ p.lead{
   min-width:96px;
 }
 
-/* status */
+
 .status{
   display:inline-flex;
   align-items:center;
@@ -448,7 +448,7 @@ p.lead{
   box-shadow:0 0 20px rgba(255,59,107,.08);
 }
 
-/* alerta */
+
 #alerta{
   margin:14px 0 12px;
   padding:12px 14px;
